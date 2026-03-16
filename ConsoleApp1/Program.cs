@@ -31,8 +31,7 @@ class Program
                     break;
 
                 case 3:
-                    Console.WriteLine("Modulo prestamos en construccion...");
-                    Console.ReadKey();
+                    LoansMenu();
                     break;
 
                 case 4:
@@ -79,7 +78,8 @@ class Program
             switch (option)
             {
                 case 1:
-                    RegisterBook();
+                    Console.WriteLine("Registrando libro...");
+                    Console.ReadKey();
                     break;
 
                 case 2:
@@ -162,13 +162,6 @@ class Program
         } while (option != 4);
     }
 
-    static void RegisterBook()
-    {
-        Console.Clear();
-        Console.WriteLine("Registrando libro...");
-        Console.ReadKey();
-    }
-
     static void UsersMenu()
     {
         int option;
@@ -189,19 +182,23 @@ class Program
             switch (option)
             {
                 case 1:
-                    AddUser();
+                    Console.WriteLine("Registrando usuario...");
+                    Console.ReadKey();
                     break;
 
                 case 2:
-                    ListUsers();
+                    Console.WriteLine("Listando usuarios...");
+                    Console.ReadKey();
                     break;
 
                 case 3:
-                    UpdateUser();
+                    Console.WriteLine("Actualizando usuario...");
+                    Console.ReadKey();
                     break;
 
                 case 4:
-                    DeleteUser();
+                    Console.WriteLine("Eliminando usuario...");
+                    Console.ReadKey();
                     break;
 
                 case 5:
@@ -218,31 +215,50 @@ class Program
         } while (option != 5);
     }
 
-    static void AddUser()
+    static void LoansMenu()
     {
-        Console.Clear();
-        Console.WriteLine("Registrando usuario...");
-        Console.ReadKey();
-    }
+        int option;
 
-    static void ListUsers()
-    {
-        Console.Clear();
-        Console.WriteLine("Listando usuarios...");
-        Console.ReadKey();
-    }
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("===== MENU PRESTAMOS =====");
+            Console.WriteLine("1. Registrar prestamo");
+            Console.WriteLine("2. Devolver libro");
+            Console.WriteLine("3. Listar prestamos activos");
+            Console.WriteLine("4. Volver");
+            Console.Write("Seleccione una opcion: ");
 
-    static void UpdateUser()
-    {
-        Console.Clear();
-        Console.WriteLine("Actualizando usuario...");
-        Console.ReadKey();
-    }
+            option = Convert.ToInt32(Console.ReadLine());
 
-    static void DeleteUser()
-    {
-        Console.Clear();
-        Console.WriteLine("Eliminando usuario...");
-        Console.ReadKey();
+            switch (option)
+            {
+                case 1:
+                    Console.WriteLine("Registrando prestamo...");
+                    Console.ReadKey();
+                    break;
+
+                case 2:
+                    Console.WriteLine("Devolviendo libro...");
+                    Console.ReadKey();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Listando prestamos activos...");
+                    Console.ReadKey();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (option != 4);
     }
 }
