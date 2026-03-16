@@ -18,7 +18,12 @@ class Program
             Console.WriteLine("6. Salir");
             Console.Write("Seleccione una opcion: ");
 
-            option = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida.");
+                Console.ReadKey();
+                continue;
+            }
 
             switch (option)
             {
@@ -35,8 +40,7 @@ class Program
                     break;
 
                 case 4:
-                    Console.WriteLine("Modulo busquedas y reportes en construccion...");
-                    Console.ReadKey();
+                    SearchReportsMenu();
                     break;
 
                 case 5:
@@ -73,7 +77,12 @@ class Program
             Console.WriteLine("6. Volver");
             Console.Write("Seleccione una opcion: ");
 
-            option = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
 
             switch (option)
             {
@@ -129,7 +138,12 @@ class Program
             Console.WriteLine("4. Volver");
             Console.Write("Seleccione una opcion: ");
 
-            option = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
 
             switch (option)
             {
@@ -177,7 +191,12 @@ class Program
             Console.WriteLine("5. Volver");
             Console.Write("Seleccione una opcion: ");
 
-            option = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
 
             switch (option)
             {
@@ -229,7 +248,12 @@ class Program
             Console.WriteLine("4. Volver");
             Console.Write("Seleccione una opcion: ");
 
-            option = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
 
             switch (option)
             {
@@ -260,5 +284,72 @@ class Program
             }
 
         } while (option != 4);
+    }
+
+    static void SearchReportsMenu()
+    {
+        int option;
+
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("===== BUSQUEDAS Y REPORTES =====");
+            Console.WriteLine("1. Buscar libro por titulo");
+            Console.WriteLine("2. Buscar usuario por nombre");
+            Console.WriteLine("3. Reporte de libros prestados");
+            Console.WriteLine("4. Volver");
+            Console.Write("Seleccione una opcion: ");
+
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
+
+            switch (option)
+            {
+                case 1:
+                    SearchBookByTitle();
+                    break;
+
+                case 2:
+                    SearchUserByName();
+                    break;
+
+                case 3:
+                    ReportBorrowedBooks();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (option != 4);
+    }
+
+    static void SearchBookByTitle()
+    {
+        Console.WriteLine("Buscando libro por titulo...");
+        Console.ReadKey();
+    }
+
+    static void SearchUserByName()
+    {
+        Console.WriteLine("Buscando usuario por nombre...");
+        Console.ReadKey();
+    }
+
+    static void ReportBorrowedBooks()
+    {
+        Console.WriteLine("Generando reporte de libros prestados...");
+        Console.ReadKey();
     }
 }
