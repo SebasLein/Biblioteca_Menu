@@ -4,138 +4,245 @@ class Program
 {
     static void Main()
     {
-        ShowMainMenu();
-    }
+        int option;
 
-    static void ShowMainMenu()
-    {
-        int opcion = 0;
-
-        while (opcion != 6)
+        do
         {
-            Console.WriteLine("\n===== SISTEMA DE BIBLIOTECA =====");
+            Console.Clear();
+            Console.WriteLine("===== SISTEMA DE BIBLIOTECA =====");
             Console.WriteLine("1. Libros");
             Console.WriteLine("2. Usuarios");
             Console.WriteLine("3. Prestamos");
             Console.WriteLine("4. Busquedas y reportes");
             Console.WriteLine("5. Guardar / Cargar datos");
             Console.WriteLine("6. Salir");
-
             Console.Write("Seleccione una opcion: ");
-            opcion = Convert.ToInt32(Console.ReadLine());
 
-            switch (opcion)
+            option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
             {
-                case 1: ShowBooksMenu(); break;
-                case 2: ShowUsersMenu(); break;
-                case 3: ShowLoansMenu(); break;
-                case 4: ShowSearchReportsMenu(); break;
-                case 5: ShowPersistenceMenu(); break;
-                case 6: ConfirmExitAndSave(); break;
-                default: Console.WriteLine("Opcion invalida"); break;
+                case 1:
+                    BooksMenu();
+                    break;
+
+                case 2:
+                    UsersMenu();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Modulo prestamos en construccion...");
+                    Console.ReadKey();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Modulo busquedas y reportes en construccion...");
+                    Console.ReadKey();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Modulo guardar/cargar datos en construccion...");
+                    Console.ReadKey();
+                    break;
+
+                case 6:
+                    Console.WriteLine("Saliendo del sistema...");
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
             }
-        }
+
+        } while (option != 6);
     }
 
-    // ================= LIBROS =================
-
-    static void ShowBooksMenu()
+    static void BooksMenu()
     {
-        int opcion = 0;
+        int option;
 
-        while (opcion != 6)
+        do
         {
-            Console.WriteLine("\n===== MENU LIBROS =====");
+            Console.Clear();
+            Console.WriteLine("===== MENU LIBROS =====");
             Console.WriteLine("1. Registrar libro");
             Console.WriteLine("2. Listar libros");
             Console.WriteLine("3. Ver detalle de libro");
             Console.WriteLine("4. Actualizar libro");
             Console.WriteLine("5. Eliminar libro");
             Console.WriteLine("6. Volver");
-
             Console.Write("Seleccione una opcion: ");
-            opcion = Convert.ToInt32(Console.ReadLine());
 
-            switch (opcion)
+            option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
             {
-                case 1: RegisterBook(); break;
-                case 2: ListBooksMenu(); break;
-                case 3: ViewBookDetail(); break;
-                case 4: UpdateBookMenu(); break;
-                case 5: DeleteBook(); break;
-                case 6: Console.WriteLine("Volviendo..."); break;
-                default: Console.WriteLine("Opcion invalida"); break;
+                case 1:
+                    RegisterBook();
+                    break;
+
+                case 2:
+                    ListBooksMenu();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Mostrando detalle del libro...");
+                    Console.ReadKey();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Actualizando libro...");
+                    Console.ReadKey();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Eliminando libro...");
+                    Console.ReadKey();
+                    break;
+
+                case 6:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
             }
-        }
+
+        } while (option != 6);
     }
 
     static void ListBooksMenu()
     {
-        int opcion = 0;
+        int option;
 
-        while (opcion != 4)
+        do
         {
-            Console.WriteLine("\n===== LISTAR LIBROS =====");
+            Console.Clear();
+            Console.WriteLine("===== LISTAR LIBROS =====");
             Console.WriteLine("1. Listar todos");
             Console.WriteLine("2. Listar disponibles");
             Console.WriteLine("3. Listar prestados");
             Console.WriteLine("4. Volver");
-
             Console.Write("Seleccione una opcion: ");
-            opcion = Convert.ToInt32(Console.ReadLine());
 
-            switch (opcion)
+            option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
             {
-                case 1: ListBooksAll(); break;
-                case 2: ListBooksAvailable(); break;
-                case 3: ListBooksBorrowed(); break;
-                case 4: Console.WriteLine("Volviendo..."); break;
-                default: Console.WriteLine("Opcion invalida"); break;
+                case 1:
+                    Console.WriteLine("Listando todos los libros...");
+                    Console.ReadKey();
+                    break;
+
+                case 2:
+                    Console.WriteLine("Listando libros disponibles...");
+                    Console.ReadKey();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Listando libros prestados...");
+                    Console.ReadKey();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
             }
-        }
+
+        } while (option != 4);
     }
 
-    static void UpdateBookMenu()
+    static void RegisterBook()
     {
-        int opcion = 0;
-
-        while (opcion != 4)
-        {
-            Console.WriteLine("\n===== ACTUALIZAR LIBRO =====");
-            Console.WriteLine("1. Editar titulo");
-            Console.WriteLine("2. Editar autor");
-            Console.WriteLine("3. Editar año / categoria");
-            Console.WriteLine("4. Volver");
-
-            Console.Write("Seleccione una opcion: ");
-            opcion = Convert.ToInt32(Console.ReadLine());
-
-            switch (opcion)
-            {
-                case 1: EditBookTitle(); break;
-                case 2: EditBookAuthor(); break;
-                case 3: EditBookYearCategory(); break;
-                case 4: Console.WriteLine("Volviendo..."); break;
-                default: Console.WriteLine("Opcion invalida"); break;
-            }
-        }
+        Console.Clear();
+        Console.WriteLine("Registrando libro...");
+        Console.ReadKey();
     }
 
-    static void RegisterBook() => Console.WriteLine("Registrando libro...");
-    static void ListBooksAll() => Console.WriteLine("Listando todos los libros...");
-    static void ListBooksAvailable() => Console.WriteLine("Listando libros disponibles...");
-    static void ListBooksBorrowed() => Console.WriteLine("Listando libros prestados...");
-    static void ViewBookDetail() => Console.WriteLine("Mostrando detalle del libro...");
-    static void EditBookTitle() => Console.WriteLine("Editando titulo del libro...");
-    static void EditBookAuthor() => Console.WriteLine("Editando autor del libro...");
-    static void EditBookYearCategory() => Console.WriteLine("Editando año o categoria...");
-    static void DeleteBook() => Console.WriteLine("Eliminando libro...");
+    static void UsersMenu()
+    {
+        int option;
 
-    // ===== STUBS TEMPORALES =====
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("===== MENU USUARIOS =====");
+            Console.WriteLine("1. Registrar usuario");
+            Console.WriteLine("2. Listar usuarios");
+            Console.WriteLine("3. Actualizar usuario");
+            Console.WriteLine("4. Eliminar usuario");
+            Console.WriteLine("5. Volver");
+            Console.Write("Seleccione una opcion: ");
 
-    static void ShowUsersMenu() => Console.WriteLine("Modulo usuarios en construccion...");
-    static void ShowLoansMenu() => Console.WriteLine("Modulo prestamos en construccion...");
-    static void ShowSearchReportsMenu() => Console.WriteLine("Modulo busquedas en construccion...");
-    static void ShowPersistenceMenu() => Console.WriteLine("Modulo persistencia en construccion...");
-    static void ConfirmExitAndSave() => Console.WriteLine("Saliendo del sistema...");
+            option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
+            {
+                case 1:
+                    AddUser();
+                    break;
+
+                case 2:
+                    ListUsers();
+                    break;
+
+                case 3:
+                    UpdateUser();
+                    break;
+
+                case 4:
+                    DeleteUser();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (option != 5);
+    }
+
+    static void AddUser()
+    {
+        Console.Clear();
+        Console.WriteLine("Registrando usuario...");
+        Console.ReadKey();
+    }
+
+    static void ListUsers()
+    {
+        Console.Clear();
+        Console.WriteLine("Listando usuarios...");
+        Console.ReadKey();
+    }
+
+    static void UpdateUser()
+    {
+        Console.Clear();
+        Console.WriteLine("Actualizando usuario...");
+        Console.ReadKey();
+    }
+
+    static void DeleteUser()
+    {
+        Console.Clear();
+        Console.WriteLine("Eliminando usuario...");
+        Console.ReadKey();
+    }
 }
