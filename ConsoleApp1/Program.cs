@@ -44,8 +44,7 @@ class Program
                     break;
 
                 case 5:
-                    Console.WriteLine("Modulo guardar/cargar datos en construccion...");
-                    Console.ReadKey();
+                    PersistenceMenu();
                     break;
 
                 case 6:
@@ -310,15 +309,18 @@ class Program
             switch (option)
             {
                 case 1:
-                    SearchBookByTitle();
+                    Console.WriteLine("Buscando libro por titulo...");
+                    Console.ReadKey();
                     break;
 
                 case 2:
-                    SearchUserByName();
+                    Console.WriteLine("Buscando usuario por nombre...");
+                    Console.ReadKey();
                     break;
 
                 case 3:
-                    ReportBorrowedBooks();
+                    Console.WriteLine("Generando reporte de libros prestados...");
+                    Console.ReadKey();
                     break;
 
                 case 4:
@@ -335,21 +337,49 @@ class Program
         } while (option != 4);
     }
 
-    static void SearchBookByTitle()
+    static void PersistenceMenu()
     {
-        Console.WriteLine("Buscando libro por titulo...");
-        Console.ReadKey();
-    }
+        int option;
 
-    static void SearchUserByName()
-    {
-        Console.WriteLine("Buscando usuario por nombre...");
-        Console.ReadKey();
-    }
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("===== GUARDAR / CARGAR DATOS =====");
+            Console.WriteLine("1. Guardar datos");
+            Console.WriteLine("2. Cargar datos");
+            Console.WriteLine("3. Volver");
+            Console.Write("Seleccione una opcion: ");
 
-    static void ReportBorrowedBooks()
-    {
-        Console.WriteLine("Generando reporte de libros prestados...");
-        Console.ReadKey();
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida");
+                Console.ReadKey();
+                continue;
+            }
+
+            switch (option)
+            {
+                case 1:
+                    Console.WriteLine("Guardando datos...");
+                    Console.ReadKey();
+                    break;
+
+                case 2:
+                    Console.WriteLine("Cargando datos...");
+                    Console.ReadKey();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Volviendo...");
+                    Console.ReadKey();
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (option != 3);
     }
 }
