@@ -31,5 +31,35 @@ namespace system_books.Models
             Estado = EstadoPrestamo.Activo;
             FechaDevolucion = null;
         }
+
+                // Verifica si el préstamo está vencido
+        public bool EstaVencido()
+        {
+            return DateTime.Now > FechaVencimiento && Estado == EstadoPrestamo.Activo;
+        }
+
+        // Calcula días transcurridos desde el préstamo
+        public int DiasTranscurridos()
+        {
+            return (DateTime.Now - FechaPrestamo).Days;
+        }
+
+        // Resumen corto
+        public string ResumenCorto()
+        {
+            return $"Prestamo #{Id} - {Libro.Titulo} a {Usuario.Nombre}";
+        }
+
+        // Detalle completo
+        public string DetalleCompleto()
+        {
+            return $"ID: {Id}\nLibro: {Libro.Titulo}\nUsuario: {Usuario.Nombre}\nFecha Préstamo: {FechaPrestamo}\nFecha Vencimiento: {FechaVencimiento}\nFecha Devolución: {FechaDevolucion}\nEstado: {Estado}";
+        }
+
+        // Override ToString
+        public override string ToString()
+        {
+            return $"{Libro.Titulo} -> {Usuario.Nombre} ({Estado})";
+        }
     }
 }
