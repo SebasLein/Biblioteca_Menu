@@ -24,5 +24,23 @@ namespace system_books.Models
             Email = email;
             Activo = true;
         }
+
+        // Método resumen corto
+        public string ResumenCorto()
+        {
+            return $"{Id} - {Nombre}";
+        }
+
+        // Método detalle completo
+        public string DetalleCompleto()
+        {
+            return $"ID: {Id}\nNombre: {Nombre}\nEmail: {Email}\nActivo: {Activo}";
+        }
+
+        // Override ToString
+        public override string ToString()
+        {
+            return $"{Nombre} ({Email})";
+        }
     }
 }
