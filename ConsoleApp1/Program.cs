@@ -1,9 +1,56 @@
 ﻿using System;
+using system_books.Models;
 
 class Program
 {
     static void Main()
     {
+        // ============================
+        // PRUEBA DE MODELOS
+        // ============================
+        Console.WriteLine("=== PRUEBA DE MODELOS ===\n");
+
+        // 📚 Crear libros
+        Libro libro1 = new Libro(1, "Cien Años de Soledad", "Gabriel García Márquez", 1967);
+        Libro libro2 = new Libro(2, "1984", "George Orwell", 1949);
+
+        // 👤 Crear usuarios
+        Usuario usuario1 = new Usuario(1, "Juan Pérez", "juan@email.com");
+        Usuario usuario2 = new Usuario(2, "Ana Gómez", "ana@email.com");
+
+        // 🔄 Crear préstamo
+        Prestamo prestamo1 = new Prestamo(
+            1,
+            libro1,
+            usuario1,
+            DateTime.Now.AddDays(-5),
+            DateTime.Now.AddDays(5)
+        );
+
+        // 📌 Mostrar información
+        Console.WriteLine(libro1.ResumenCorto());
+        Console.WriteLine(libro1.DetalleCompleto());
+
+        Console.WriteLine("\n-------------------\n");
+
+        Console.WriteLine(usuario1.ResumenCorto());
+        Console.WriteLine(usuario1.DetalleCompleto());
+
+        Console.WriteLine("\n-------------------\n");
+
+        Console.WriteLine(prestamo1.ResumenCorto());
+        Console.WriteLine(prestamo1.DetalleCompleto());
+
+        Console.WriteLine("\n¿Está vencido?: " + prestamo1.EstaVencido());
+        Console.WriteLine("Días transcurridos: " + prestamo1.DiasTranscurridos());
+
+        Console.WriteLine("\n=== FIN PRUEBA ===\n");
+        Console.ReadKey();
+
+        // ============================
+        // MENÚ ORIGINAL (NO TOCADO)
+        // ============================
+
         int option;
 
         do
