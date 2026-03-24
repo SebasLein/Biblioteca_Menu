@@ -5,20 +5,80 @@ class Program
 {
     static void Main()
     {
-        // ============================
-        // PRUEBA DE MODELOS
-        // ============================
+        int option;
+
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("===== SISTEMA DE BIBLIOTECA =====");
+            Console.WriteLine("1. Libros");
+            Console.WriteLine("2. Usuarios");
+            Console.WriteLine("3. Prestamos");
+            Console.WriteLine("4. Busquedas y reportes");
+            Console.WriteLine("5. Guardar / Cargar datos");
+            Console.WriteLine("6. Probar modelos"); // 👈 NUEVO
+            Console.WriteLine("7. Salir");
+            Console.Write("Seleccione una opcion: ");
+
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("Entrada invalida.");
+                Console.ReadKey();
+                continue;
+            }
+
+            switch (option)
+            {
+                case 1:
+                    BooksMenu();
+                    break;
+
+                case 2:
+                    UsersMenu();
+                    break;
+
+                case 3:
+                    LoansMenu();
+                    break;
+
+                case 4:
+                    SearchReportsMenu();
+                    break;
+
+                case 5:
+                    PersistenceMenu();
+                    break;
+
+                case 6:
+                    ProbarModelos(); // 👈 NUEVO
+                    break;
+
+                case 7:
+                    Console.WriteLine("Saliendo del sistema...");
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion invalida");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (option != 7);
+
+    // ============================
+    // MÉTODO DE TESTING (NUEVO)
+    // ============================
+    static void ProbarModelos()
+    {
+        Console.Clear();
         Console.WriteLine("=== PRUEBA DE MODELOS ===\n");
 
-        // 📚 Crear libros
         Libro libro1 = new Libro(1, "Cien Años de Soledad", "Gabriel García Márquez", 1967);
         Libro libro2 = new Libro(2, "1984", "George Orwell", 1949);
 
-        // 👤 Crear usuarios
         Usuario usuario1 = new Usuario(1, "Juan Pérez", "juan@email.com");
         Usuario usuario2 = new Usuario(2, "Ana Gómez", "ana@email.com");
 
-        // 🔄 Crear préstamo
         Prestamo prestamo1 = new Prestamo(
             1,
             libro1,
@@ -27,7 +87,6 @@ class Program
             DateTime.Now.AddDays(5)
         );
 
-        // 📌 Mostrar información
         Console.WriteLine(libro1.ResumenCorto());
         Console.WriteLine(libro1.DetalleCompleto());
 
@@ -46,6 +105,8 @@ class Program
 
         Console.WriteLine("\n=== FIN PRUEBA ===\n");
         Console.ReadKey();
+    }
+
 
         // ============================
         // MENÚ ORIGINAL (NO TOCADO)
