@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
-using system_books.Models;
 using System.Linq;
+using system_books.Models;
 
 namespace system_books.Services
 {
     public class LibroService
     {
         private List<Libro> libros = new List<Libro>();
+
+        // =========================
+        // CRUD BÁSICO
+        // =========================
 
         // Agregar libro
         public void AgregarLibro(Libro libro)
@@ -21,16 +25,20 @@ namespace system_books.Services
             return libros;
         }
 
-        // Eliminar libro (básico)
+        // Eliminar libro
         public void EliminarLibro(Libro libro)
         {
             libros.Remove(libro);
         }
 
-        // Buscar por ISBN
-        public Libro BuscarPorISBN(string isbn)
+        // =========================
+        // BÚSQUEDAS
+        // =========================
+
+        // Buscar por ID
+        public Libro BuscarPorId(int id)
         {
-            return libros.Find(l => l.ISBN == isbn);
+            return libros.Find(l => l.Id == id);
         }
 
         // Buscar por título
@@ -45,6 +53,10 @@ namespace system_books.Services
             return libros.FindAll(l => l.Autor.ToLower().Contains(autor.ToLower()));
         }
 
+        // =========================
+        // ORDENACIÓN
+        // =========================
+
         // Ordenar por título
         public List<Libro> OrdenarPorTitulo()
         {
@@ -55,6 +67,28 @@ namespace system_books.Services
         public List<Libro> OrdenarPorAnio()
         {
             return libros.OrderBy(l => l.Anio).ToList();
+        }
+
+        // =========================
+        // KPIs
+        // =========================
+
+        // Total de libros
+        public int ObtenerTotalLibros()
+        {
+            return libros.Count;
+        }
+
+        // Libros disponibles
+        public int ObtenerLibrosDisponibles()
+        {
+            return libros.Count(l => l.Disponible);
+        }
+
+        // Libros prestados
+        public int ObtenerLibrosPrestados()
+        {
+            return libros.Count(l => !l.Disponible);
         }
     }
 }
