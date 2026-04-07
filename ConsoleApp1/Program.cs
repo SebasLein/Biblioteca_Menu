@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using services;
 using Models;
@@ -12,7 +13,7 @@ class Program
 
     static void Main()
     {
-        // Seed inicial para que el sistema tenga datos
+        // Seed inicial
         SeedDataIfEmpty();
 
         bool running = true;
@@ -34,30 +35,14 @@ class Program
 
             switch (option)
             {
-                case 1:
-                    BooksMenu();
-                    break;
-                case 2:
-                    UsersMenu();
-                    break;
-                case 3:
-                    LoansMenu();
-                    break;
-                case 4:
-                    SearchReportsMenu();
-                    break;
-                case 5:
-                    PersistenceMenu();
-                    break;
-                case 6:
-                    ProbarServicios();
-                    break;
-                case 7:
-                    CompararArrayVsList();
-                    break;
-                case 8:
-                    running = !ConfirmExit();
-                    break;
+                case 1: BooksMenu(); break;
+                case 2: UsersMenu(); break;
+                case 3: LoansMenu(); break;              // COMMIT 3
+                case 4: SearchReportsMenu(); break;      // COMMIT 3
+                case 5: PersistenceMenu(); break;         // COMMIT 3
+                case 6: ProbarServicios(); break;
+                case 7: CompararArrayVsList(); break;
+                case 8: running = !ConfirmExit(); break;
             }
         }
     }
@@ -83,13 +68,13 @@ class Program
         usuarioService.AgregarUsuario(usuario1);
         usuarioService.AgregarUsuario(usuario2);
 
-        // Préstamo activo seed (libro1 pasa a no disponible dentro del service al crear el préstamo)
+        // Préstamo activo seed
         var prestamo1 = new Prestamo(1, libro1, usuario1, DateTime.Now.AddDays(-5), DateTime.Now.AddDays(5));
         prestamoService.CrearPrestamo(prestamo1);
     }
 
     // =========================
-    // HELPERS DE INPUT
+    // HELPERS
     // =========================
     static int ReadOption(int min, int max)
     {
@@ -152,7 +137,7 @@ class Program
     }
 
     // =========================
-    // MENÚ LIBROS (CRUD real en COMMIT 2)
+    // COMMIT 2: CRUD REAL LIBROS
     // =========================
     static void BooksMenu()
     {
@@ -168,23 +153,212 @@ class Program
             Console.WriteLine("5. Eliminar libro");
             Console.WriteLine("0. Volver");
 
+            Console.Write("Seleccione una opción: ");
             int option = ReadOption(0, 5);
 
             switch (option)
             {
+                case 1: RegisterBook(); break;
+                case 2: ListBooksMenu(); break;
+                case 3: ViewBookDetail(); break;
+                case 4: UpdateBookMenu(); break;
+                case 5: DeleteBook(); break;
+                case 0: back = true; break;
+            }
+        }
+    }
+
+    static void RegisterBook()
+    {
+        Console.Clear();
+        Console.WriteLine("=== REGISTRAR LIBRO ===");
+
+        int id = ReadInt("ID: ");
+        var existing = libroService.BuscarPorId(id);
+        if (existing != null)
+        {
+            Console.WriteLine("[ERROR] Ya existe un libro con ese ID.");
+            Pause();
+            return;
+        }
+
+        string titulo = ReadText("Título: ");
+        string autor = ReadText("Autor: ");
+        int anio = ReadInt("Año: ");
+
+        var libro = new Libro(id, titulo, autor, anio);
+        libroService.AgregarLibro(libro);
+
+        Console.WriteLine("[OK] Libro registrado.");
+        Console.WriteLine(libro.DetalleCompleto());
+        Pause();
+    }
+
+    static void ListBooksMenu()
+    {
+        bool back = false;
+        while (!back)
+        {
+            Console.Clear();
+            Console.WriteLine("===== LISTAR LIBROS =====");
+            Console.WriteLine("1. Listar todos");
+            Console.WriteLine("2. Listar disponibles");
+            Console.WriteLine("3. Listar prestados");
+            Console.WriteLine("0. Volver");
+
+            Console.Write("Seleccione una opción: ");
+            int option = ReadOption(0, 3);
+
+            var all = libroService.ObtenerTodos();
+
+            switch (option)
+            {
+                case 1:
+                    Console.WriteLine("\n--- TODOS ---");
+                    if (all.Count == 0) Console.WriteLine("[INFO] No hay libros.");
+                    else all.ForEach(l => Console.WriteLine(l.DetalleCompleto() + "\n---"));
+                    Pause();
+                    break;
+
+                case 2:
+                    Console.WriteLine("\n--- DISPONIBLES ---");
+                    var disponibles = all.Where(l => l.Disponible).ToList();
+                    if (disponibles.Count == 0) Console.WriteLine("[INFO] No hay libros disponibles.");
+                    else disponibles.ForEach(l => Console.WriteLine(l.DetalleCompleto() + "\n---"));
+                    Pause();
+                    break;
+
+                case 3:
+                    Console.WriteLine("\n--- PRESTADOS ---");
+                    var prestados = all.Where(l => !l.Disponible).ToList();
+                    if (prestados.Count == 0) Console.WriteLine("[INFO] No hay libros prestados.");
+                    else prestados.ForEach(l => Console.WriteLine(l.DetalleCompleto() + "\n---"));
+                    Pause();
+                    break;
+
                 case 0:
                     back = true;
-                    break;
-                default:
-                    Console.WriteLine("[PENDIENTE] CRUD real de libros se implementa en COMMIT 2.");
-                    Pause();
                     break;
             }
         }
     }
 
+    static void ViewBookDetail()
+    {
+        Console.Clear();
+        Console.WriteLine("=== DETALLE DE LIBRO ===");
+
+        int id = ReadInt("ID del libro: ");
+        var libro = libroService.BuscarPorId(id);
+
+        if (libro == null)
+        {
+            Console.WriteLine("[INFO] Libro no encontrado.");
+            Pause();
+            return;
+        }
+
+        Console.WriteLine(libro.DetalleCompleto());
+        Pause();
+    }
+
+    static void UpdateBookMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("=== ACTUALIZAR LIBRO ===");
+
+        int id = ReadInt("ID del libro: ");
+        var libro = libroService.BuscarPorId(id);
+
+        if (libro == null)
+        {
+            Console.WriteLine("[INFO] Libro no encontrado.");
+            Pause();
+            return;
+        }
+
+        bool back = false;
+        while (!back)
+        {
+            Console.Clear();
+            Console.WriteLine("=== EDITAR LIBRO ===");
+            Console.WriteLine(libro.ResumenCorto());
+            Console.WriteLine("1. Editar título");
+            Console.WriteLine("2. Editar autor");
+            Console.WriteLine("3. Editar año");
+            Console.WriteLine("0. Volver");
+
+            Console.Write("Seleccione una opción: ");
+            int option = ReadOption(0, 3);
+
+            switch (option)
+            {
+                case 1:
+                    libro.Titulo = ReadText("Nuevo título: ");
+                    Console.WriteLine("[OK] Título actualizado.");
+                    Pause();
+                    break;
+
+                case 2:
+                    libro.Autor = ReadText("Nuevo autor: ");
+                    Console.WriteLine("[OK] Autor actualizado.");
+                    Pause();
+                    break;
+
+                case 3:
+                    libro.Anio = ReadInt("Nuevo año: ");
+                    Console.WriteLine("[OK] Año actualizado.");
+                    Pause();
+                    break;
+
+                case 0:
+                    back = true;
+                    break;
+            }
+        }
+    }
+
+    static void DeleteBook()
+    {
+        Console.Clear();
+        Console.WriteLine("=== ELIMINAR LIBRO ===");
+
+        int id = ReadInt("ID del libro: ");
+        var libro = libroService.BuscarPorId(id);
+
+        if (libro == null)
+        {
+            Console.WriteLine("[INFO] Libro no encontrado.");
+            Pause();
+            return;
+        }
+
+        // Regla: NO eliminar si está en préstamo activo o no disponible
+        bool prestamoActivo = prestamoService.ObtenerPrestamosActivos()
+            .Any(p => p.Libro != null && p.Libro.Id == id);
+
+        if (prestamoActivo || !libro.Disponible)
+        {
+            Console.WriteLine("[ERROR] No se puede eliminar: el libro está prestado (préstamo activo).");
+            Pause();
+            return;
+        }
+
+        bool confirm = ConfirmYesNo($"¿Seguro que desea eliminar '{libro.Titulo}'? (S/N): ");
+        if (!confirm)
+        {
+            Console.WriteLine("[INFO] Cancelado.");
+            Pause();
+            return;
+        }
+
+        libroService.EliminarLibro(libro);
+        Console.WriteLine("[OK] Libro eliminado.");
+        Pause();
+    }
+
     // =========================
-    // MENÚ USUARIOS (CRUD real en COMMIT 2)
+    // COMMIT 2: CRUD REAL USUARIOS
     // =========================
     static void UsersMenu()
     {
@@ -200,19 +374,181 @@ class Program
             Console.WriteLine("5. Eliminar usuario");
             Console.WriteLine("0. Volver");
 
+            Console.Write("Seleccione una opción: ");
             int option = ReadOption(0, 5);
 
             switch (option)
             {
+                case 1: RegisterUser(); break;
+                case 2: ListUsers(); break;
+                case 3: ViewUserDetail(); break;
+                case 4: UpdateUserMenu(); break;
+                case 5: DeleteUser(); break;
+                case 0: back = true; break;
+            }
+        }
+    }
+
+    static void RegisterUser()
+    {
+        Console.Clear();
+        Console.WriteLine("=== REGISTRAR USUARIO ===");
+
+        int id = ReadInt("ID: ");
+        var existing = usuarioService.BuscarPorId(id);
+        if (existing != null)
+        {
+            Console.WriteLine("[ERROR] Ya existe un usuario con ese ID.");
+            Pause();
+            return;
+        }
+
+        string nombre = ReadText("Nombre: ");
+        string email = ReadText("Email: ");
+
+        var usuario = new Usuario(id, nombre, email);
+        usuarioService.AgregarUsuario(usuario);
+
+        Console.WriteLine("[OK] Usuario registrado.");
+        Console.WriteLine(usuario.DetalleCompleto());
+        Pause();
+    }
+
+    static void ListUsers()
+    {
+        Console.Clear();
+        Console.WriteLine("=== LISTA DE USUARIOS ===\n");
+
+        var all = usuarioService.ObtenerTodos();
+        if (all.Count == 0)
+        {
+            Console.WriteLine("[INFO] No hay usuarios.");
+            Pause();
+            return;
+        }
+
+        foreach (var u in all)
+        {
+            Console.WriteLine(u.DetalleCompleto());
+            Console.WriteLine("---");
+        }
+
+        Pause();
+    }
+
+    static void ViewUserDetail()
+    {
+        Console.Clear();
+        Console.WriteLine("=== DETALLE DE USUARIO ===");
+
+        int id = ReadInt("ID del usuario: ");
+        var user = usuarioService.BuscarPorId(id);
+
+        if (user == null)
+        {
+            Console.WriteLine("[INFO] Usuario no encontrado.");
+            Pause();
+            return;
+        }
+
+        Console.WriteLine(user.DetalleCompleto());
+        Pause();
+    }
+
+    static void UpdateUserMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("=== ACTUALIZAR USUARIO ===");
+
+        int id = ReadInt("ID del usuario: ");
+        var user = usuarioService.BuscarPorId(id);
+
+        if (user == null)
+        {
+            Console.WriteLine("[INFO] Usuario no encontrado.");
+            Pause();
+            return;
+        }
+
+        bool back = false;
+        while (!back)
+        {
+            Console.Clear();
+            Console.WriteLine("=== EDITAR USUARIO ===");
+            Console.WriteLine(user.ResumenCorto());
+            Console.WriteLine($"Activo: {user.Activo}");
+            Console.WriteLine("1. Editar nombre");
+            Console.WriteLine("2. Editar email");
+            Console.WriteLine("3. Activar / desactivar");
+            Console.WriteLine("0. Volver");
+
+            Console.Write("Seleccione una opción: ");
+            int option = ReadOption(0, 3);
+
+            switch (option)
+            {
+                case 1:
+                    user.Nombre = ReadText("Nuevo nombre: ");
+                    Console.WriteLine("[OK] Nombre actualizado.");
+                    Pause();
+                    break;
+
+                case 2:
+                    user.Email = ReadText("Nuevo email: ");
+                    Console.WriteLine("[OK] Email actualizado.");
+                    Pause();
+                    break;
+
+                case 3:
+                    user.Activo = !user.Activo;
+                    Console.WriteLine(user.Activo ? "[OK] Usuario activado." : "[OK] Usuario desactivado.");
+                    Pause();
+                    break;
+
                 case 0:
                     back = true;
                     break;
-                default:
-                    Console.WriteLine("[PENDIENTE] CRUD real de usuarios se implementa en COMMIT 2.");
-                    Pause();
-                    break;
             }
         }
+    }
+
+    static void DeleteUser()
+    {
+        Console.Clear();
+        Console.WriteLine("=== ELIMINAR USUARIO ===");
+
+        int id = ReadInt("ID del usuario: ");
+        var user = usuarioService.BuscarPorId(id);
+
+        if (user == null)
+        {
+            Console.WriteLine("[INFO] Usuario no encontrado.");
+            Pause();
+            return;
+        }
+
+        // Regla: NO eliminar si tiene préstamo activo
+        bool prestamoActivo = prestamoService.ObtenerPrestamosActivos()
+            .Any(p => p.Usuario != null && p.Usuario.Id == id);
+
+        if (prestamoActivo)
+        {
+            Console.WriteLine("[ERROR] No se puede eliminar: el usuario tiene préstamos activos.");
+            Pause();
+            return;
+        }
+
+        bool confirm = ConfirmYesNo($"¿Seguro que desea eliminar a '{user.Nombre}'? (S/N): ");
+        if (!confirm)
+        {
+            Console.WriteLine("[INFO] Cancelado.");
+            Pause();
+            return;
+        }
+
+        usuarioService.EliminarUsuario(user);
+        Console.WriteLine("[OK] Usuario eliminado.");
+        Pause();
     }
 
     // =========================
@@ -220,35 +556,13 @@ class Program
     // =========================
     static void LoansMenu()
     {
-        bool back = false;
-        while (!back)
-        {
-            Console.Clear();
-            Console.WriteLine("===== MENÚ PRÉSTAMOS =====");
-            Console.WriteLine("1. Registrar préstamo");
-            Console.WriteLine("2. Registrar devolución");
-            Console.WriteLine("3. Listar préstamos");
-            Console.WriteLine("4. Ver detalle de préstamo");
-            Console.WriteLine("5. Eliminar préstamo");
-            Console.WriteLine("0. Volver");
-
-            int option = ReadOption(0, 5);
-
-            switch (option)
-            {
-                case 0:
-                    back = true;
-                    break;
-                default:
-                    Console.WriteLine("[PENDIENTE] CRUD real de préstamos se implementa en COMMIT 3.");
-                    Pause();
-                    break;
-            }
-        }
+        Console.Clear();
+        Console.WriteLine("[PENDIENTE] CRUD real de préstamos se implementa en COMMIT 3.");
+        Pause();
     }
 
     // =========================
-    // BÚSQUEDAS / REPORTES (COMMIT 3)
+    // BÚSQUEDAS/REPORTES (COMMIT 3)
     // =========================
     static void SearchReportsMenu()
     {
@@ -268,7 +582,7 @@ class Program
     }
 
     // =========================
-    // OPCIÓN 6: PROBAR SERVICES (ya funcional desde COMMIT 1)
+    // OPCIÓN 6: PROBAR SERVICES
     // =========================
     static void ProbarServicios()
     {
@@ -299,14 +613,13 @@ class Program
     }
 
     // =========================
-    // OPCIÓN 7: COMPARAR ARRAYS vs LIST (ya funcional desde COMMIT 1)
+    // OPCIÓN 7: COMPARAR ARRAYS vs LIST
     // =========================
     static void CompararArrayVsList()
     {
         Console.Clear();
         Console.WriteLine("=== COMPARACIÓN ARRAY vs LIST ===\n");
 
-        // ARRAY: tamaño fijo
         string[] arrayNombres = new string[2];
         arrayNombres[0] = "Ana";
         arrayNombres[1] = "Juan";
